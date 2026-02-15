@@ -4,7 +4,7 @@ from app.core.config import settings
 def test_login_access_token(client: TestClient) -> None:
     login_data = {
         "username": "test@example.com",
-        "password": "password123"
+        "password": "Password123!"
     }
     # Note: This test assumes user exists. In a real integration test, 
     # we would create the user first. For now, checking the 
@@ -17,7 +17,7 @@ def test_login_access_token(client: TestClient) -> None:
 def test_register_user(client: TestClient) -> None:
     data = {
         "email": "newuser@example.com",
-        "password": "newpassword123",
+        "password": "Password123!",
         "first_name": "New",
         "last_name": "User"
     }

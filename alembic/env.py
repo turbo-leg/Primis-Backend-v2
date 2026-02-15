@@ -11,7 +11,9 @@ sys.path.append(os.getcwd())
 from app.core.config import settings
 from app.core.database import Base
 from app.models.user import User
-from app.models.course import Course  # Import Course model
+from app.models.course import Course
+from app.models.class_session import ClassSession # Import ClassSession model
+
 
 
 config = context.config

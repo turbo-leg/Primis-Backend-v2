@@ -14,6 +14,7 @@ from app.models.user import User
 from app.models.course import Course
 from app.models.class_session import ClassSession
 from app.models.attendance import Attendance # Import Attendance model
+from app.models.enrollment import Enrollment
 
 
 

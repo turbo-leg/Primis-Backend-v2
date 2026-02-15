@@ -10,8 +10,14 @@ class AttendanceStatus(str, enum.Enum):
     LATE = "late"
     EXCUSED = "excused"
 
+from sqlalchemy import UniqueConstraint
+
 class Attendance(Base):
-    __tablename__ = "attendance"
+    __tablename__ = "attendances"
+    __table_args__ = (
+        UniqueConstraint('session_id', 'student_id', name='uq_attendance_session_student'),
+    )
+
 
     id = Column(Integer, primary_key=True, index=True)
     session_id = Column(Integer, ForeignKey("class_sessions.id"), nullable=False)

@@ -4,10 +4,10 @@ from app.core.config import settings
 
 def test_create_class_session(client: TestClient, db) -> None:
     # 1. Login
-    login_data = {"username": "instructor@example.com", "password": "password123"}
+    # 1. Login
+    login_data = {"username": "instructor_new@example.com", "password": "Password123!"}
     # Ensure user exists (relying on previous tests or DB state)
-    client.post(f"{settings.API_V1_STR}/auth/register", json={"email": "instructor@example.com", "password": "Password123!", "first_name": "Inst", "last_name": "Ructor"})
-    login_data = {"username": "instructor@example.com", "password": "Password123!"}
+    client.post(f"{settings.API_V1_STR}/auth/register", json={"email": "instructor_new@example.com", "password": "Password123!", "first_name": "Inst", "last_name": "Ructor", "role": "instructor"})
     r = client.post(f"{settings.API_V1_STR}/auth/login", data=login_data)
     a_token = r.json()["access_token"]
     headers = {"Authorization": f"Bearer {a_token}"}
@@ -41,7 +41,7 @@ def test_create_class_session(client: TestClient, db) -> None:
     assert created_session["course_id"] == course_id
 
 def test_read_sessions(client: TestClient) -> None:
-    login_data = {"username": "instructor@example.com", "password": "Password123!"}
+    login_data = {"username": "instructor_new@example.com", "password": "Password123!"}
     r = client.post(f"{settings.API_V1_STR}/auth/login", data=login_data)
     if r.status_code == 200:
         a_token = r.json()["access_token"]

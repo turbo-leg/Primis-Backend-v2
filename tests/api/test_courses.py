@@ -7,7 +7,7 @@ def test_create_course(client: TestClient, db) -> None:
     # Ensure user exists (relying on test database state or creating one if needed)
     # For robust tests, we should create a user here, but for now assuming the one from test_auth exists or we recreate
     # Let's create a fresh user for this test module to be safe
-    user_data = {"email": "instructor@example.com", "password": "password123", "first_name": "Inst", "last_name": "Ructor"}
+    user_data = {"email": "instructor@example.com", "password": "Password123!", "first_name": "Inst", "last_name": "Ructor"}
     client.post(f"{settings.API_V1_STR}/auth/register", json=user_data)
     
     r = client.post(f"{settings.API_V1_STR}/auth/login", data={"username": user_data["email"], "password": user_data["password"]})
@@ -31,7 +31,7 @@ def test_create_course(client: TestClient, db) -> None:
 
 def test_read_courses(client: TestClient) -> None:
     # Login
-    login_data = {"username": "instructor@example.com", "password": "password123"}
+    login_data = {"username": "instructor@example.com", "password": "Password123!"}
     r = client.post(f"{settings.API_V1_STR}/auth/login", data=login_data)
     if r.status_code == 200:
         a_token = r.json()["access_token"]

@@ -12,7 +12,9 @@ from app.core.config import settings
 from app.core.database import Base
 from app.models.user import User
 from app.models.course import Course
-from app.models.class_session import ClassSession # Import ClassSession model
+from app.models.class_session import ClassSession
+from app.models.attendance import Attendance # Import Attendance model
+
 
 
 

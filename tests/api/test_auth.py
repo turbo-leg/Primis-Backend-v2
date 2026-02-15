@@ -18,7 +18,6 @@ def test_register_user(client: TestClient) -> None:
     data = {
         "email": "newuser@example.com",
         "password": "Password123!",
-
         "first_name": "New",
         "last_name": "User"
     }

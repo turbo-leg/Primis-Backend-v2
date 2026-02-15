@@ -23,7 +23,7 @@ class Attendance(Base):
     session_id = Column(Integer, ForeignKey("class_sessions.id"), nullable=False)
     student_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     status = Column(Enum(AttendanceStatus), default=AttendanceStatus.ABSENT, nullable=False)
-    timestamp = Column(DateTime(timezone=True), server_default=func.now())
+    timestamp = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
     
     session = relationship("ClassSession", backref="attendances")
     student = relationship("User", backref="attendance_records")

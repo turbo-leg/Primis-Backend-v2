@@ -4,7 +4,6 @@ from app.core.config import settings
 
 def test_create_class_session(client: TestClient, db) -> None:
     # 1. Login
-    # 1. Login
     login_data = {"username": "instructor_new@example.com", "password": "Password123!"}
     # Ensure user exists (relying on previous tests or DB state)
     client.post(f"{settings.API_V1_STR}/auth/register", json={"email": "instructor_new@example.com", "password": "Password123!", "first_name": "Inst", "last_name": "Ructor", "role": "instructor"})

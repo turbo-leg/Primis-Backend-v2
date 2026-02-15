@@ -21,11 +21,12 @@ def test_mark_attendance(client: TestClient, db) -> None:
     course_id = r.json()["id"]
 
     # 4. Create Session
+    from datetime import datetime, timedelta, timezone
     session_data = {
         "course_id": course_id, 
         "instructor_id": user_id, 
-        "start_time": "2026-02-14T10:00:00Z",
-        "end_time": "2026-02-14T11:00:00Z"
+        "start_time": datetime.now(timezone.utc).isoformat(),
+        "end_time": (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat()
     }
     r = client.post(f"{settings.API_V1_STR}/classes/", headers=headers, json=session_data)
     session_id = r.json()["id"]

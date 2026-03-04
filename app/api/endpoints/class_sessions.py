@@ -18,11 +18,12 @@ def read_sessions(
     skip: int = 0,
     limit: int = 100,
     course_id: Optional[int] = None,
+    instructor_id: Optional[int] = None,
     db: Session = Depends(deps.get_db),
     current_user: User = Depends(deps.get_current_active_user),
 ):
     sessions = crud_class_session.get_class_sessions(
-        db, skip=skip, limit=limit, course_id=course_id
+        db, skip=skip, limit=limit, course_id=course_id, instructor_id=instructor_id
     )
     return sessions
 

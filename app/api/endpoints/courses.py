@@ -8,15 +8,18 @@ from app.models.user import User
 
 router = APIRouter()
 
+from typing import List, Optional
 
 @router.get("/", response_model=List[CourseResponse])
 def read_courses(
     skip: int = 0,
     limit: int = 100,
+    title: Optional[str] = None,
+    is_published: Optional[bool] = None,
     db: Session = Depends(deps.get_db),
     current_user: User = Depends(deps.get_current_active_user),
 ):
-    courses = crud_course.get_courses(db, skip=skip, limit=limit)
+    courses = crud_course.get_courses(db, skip=skip, limit=limit, title=title, is_published=is_published)
     return courses
 
 

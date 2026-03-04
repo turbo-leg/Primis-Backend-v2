@@ -8,11 +8,13 @@ def get_class_session(db: Session, session_id: int):
 
 
 def get_class_sessions(
-    db: Session, skip: int = 0, limit: int = 100, course_id: int = None
+    db: Session, skip: int = 0, limit: int = 100, course_id: int = None, instructor_id: int = None
 ):
     query = db.query(ClassSession)
     if course_id:
         query = query.filter(ClassSession.course_id == course_id)
+    if instructor_id:
+        query = query.filter(ClassSession.instructor_id == instructor_id)
     return query.offset(skip).limit(limit).all()
 
 

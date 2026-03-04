@@ -4,10 +4,15 @@ from sqlalchemy.orm import Session
 from app.api import deps
 from app.models.user import User
 from app.models.enrollment import Enrollment
-from app.schemas.enrollment import EnrollmentCreate, EnrollmentResponse, EnrollmentUpdate
+from app.schemas.enrollment import (
+    EnrollmentCreate,
+    EnrollmentResponse,
+    EnrollmentUpdate,
+)
 from app.crud import crud_enrollment
 
 router = APIRouter()
+
 
 @router.post("/", response_model=EnrollmentResponse)
 def create_enrollment(
@@ -25,12 +30,14 @@ def create_enrollment(
     )
     if existing:
         raise HTTPException(
-            status_code=400,
-            detail="User already enrolled in this course"
+            status_code=400, detail="User already enrolled in this course"
         )
-    
-    enrollment = crud_enrollment.create_enrollment(db, obj_in=enrollment_in, user_id=current_user.id)
+
+    enrollment = crud_enrollment.create_enrollment(
+        db, obj_in=enrollment_in, user_id=current_user.id
+    )
     return enrollment
+
 
 @router.get("/me", response_model=List[EnrollmentResponse])
 def read_my_enrollments(
@@ -42,7 +49,10 @@ def read_my_enrollments(
     """
     Get current user's enrollments.
     """
-    return crud_enrollment.get_enrollments_by_user(db, user_id=current_user.id, skip=skip, limit=limit)
+    return crud_enrollment.get_enrollments_by_user(
+        db, user_id=current_user.id, skip=skip, limit=limit
+    )
+
 
 @router.get("/{enrollment_id}", response_model=EnrollmentResponse)
 def read_enrollment(

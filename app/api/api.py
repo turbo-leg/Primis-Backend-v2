@@ -7,4 +7,6 @@ api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
 api_router.include_router(courses.router, prefix="/courses", tags=["courses"])
 api_router.include_router(class_sessions.router, prefix="/classes", tags=["classes"])
 api_router.include_router(attendance.router, prefix="/attendance", tags=["attendance"])
-api_router.include_router(enrollments.router, prefix="/enrollments", tags=["enrollments"])
+api_router.include_router(
+    enrollments.router, prefix="/enrollments", tags=["enrollments"]
+)

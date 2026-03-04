@@ -4,10 +4,12 @@ from fastapi.testclient import TestClient
 from app.main import app
 from app.core.database import SessionLocal
 
+
 @pytest.fixture(scope="module")
 def client() -> Generator:
     with TestClient(app) as c:
         yield c
+
 
 @pytest.fixture(scope="session")
 def db() -> Generator:

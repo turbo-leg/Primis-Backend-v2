@@ -2,6 +2,7 @@ from typing import Optional
 from pydantic import BaseModel
 from datetime import datetime
 
+
 class ClassSessionBase(BaseModel):
     course_id: int
     instructor_id: int
@@ -11,8 +12,10 @@ class ClassSessionBase(BaseModel):
     end_time: datetime
     location: Optional[str] = None
 
+
 class ClassSessionCreate(ClassSessionBase):
     pass
+
 
 class ClassSessionUpdate(BaseModel):
     name: Optional[str] = None
@@ -21,6 +24,7 @@ class ClassSessionUpdate(BaseModel):
     end_time: Optional[datetime] = None
     location: Optional[str] = None
     instructor_id: Optional[int] = None
+
 
 class ClassSessionResponse(ClassSessionBase):
     id: int

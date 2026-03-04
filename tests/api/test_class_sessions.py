@@ -2,26 +2,40 @@ from datetime import datetime, timedelta, timezone
 from fastapi.testclient import TestClient
 from app.core.config import settings
 
+
 def test_create_class_session(client: TestClient, db) -> None:
     # 1. Login
     login_data = {"username": "instructor_new@example.com", "password": "Password123!"}
     # Ensure user exists (relying on previous tests or DB state)
-    client.post(f"{settings.API_V1_STR}/auth/register", json={"email": "instructor_new@example.com", "password": "Password123!", "first_name": "Inst", "last_name": "Ructor", "role": "instructor"})
+    client.post(
+        f"{settings.API_V1_STR}/auth/register",
+        json={
+            "email": "instructor_new@example.com",
+            "password": "Password123!",
+            "first_name": "Inst",
+            "last_name": "Ructor",
+            "role": "instructor",
+        },
+    )
     r = client.post(f"{settings.API_V1_STR}/auth/login", data=login_data)
     a_token = r.json()["access_token"]
     headers = {"Authorization": f"Bearer {a_token}"}
-    
+
+    from app.crud import crud_user
+    user = crud_user.get_user_by_email(db, email="instructor_new@example.com")
+    if user:
+        user.role = "instructor"
+        db.commit()
+
     # 2. Get User ID (Need it for instructor_id)
     r = client.get(f"{settings.API_V1_STR}/auth/me", headers=headers)
     user_id = r.json()["id"]
 
     # 3. Create Course (Need it for course_id)
-    course_data = {
-        "title_en": "Math 101",
-        "title_mn": "Math 101",
-        "price": 50.0
-    }
-    r = client.post(f"{settings.API_V1_STR}/courses/", headers=headers, json=course_data)
+    course_data = {"title_en": "Math 101", "title_mn": "Math 101", "price": 50.0}
+    r = client.post(
+        f"{settings.API_V1_STR}/courses/", headers=headers, json=course_data
+    )
     course_id = r.json()["id"]
 
     # 4. Create Session
@@ -31,13 +45,16 @@ def test_create_class_session(client: TestClient, db) -> None:
         "name": "Lecture 1",
         "start_time": datetime.now(timezone.utc).isoformat(),
         "end_time": (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat(),
-        "location": "Room 101"
+        "location": "Room 101",
     }
-    r = client.post(f"{settings.API_V1_STR}/classes/", headers=headers, json=session_data)
+    r = client.post(
+        f"{settings.API_V1_STR}/classes/", headers=headers, json=session_data
+    )
     assert r.status_code == 200
     created_session = r.json()
     assert created_session["name"] == session_data["name"]
     assert created_session["course_id"] == course_id
+
 
 def test_read_sessions(client: TestClient) -> None:
     login_data = {"username": "instructor_new@example.com", "password": "Password123!"}
@@ -45,7 +62,7 @@ def test_read_sessions(client: TestClient) -> None:
     if r.status_code == 200:
         a_token = r.json()["access_token"]
         headers = {"Authorization": f"Bearer {a_token}"}
-        
+
         r = client.get(f"{settings.API_V1_STR}/classes/", headers=headers)
         assert r.status_code == 200
         assert isinstance(r.json(), list)
